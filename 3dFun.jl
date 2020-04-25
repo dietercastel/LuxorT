@@ -10,7 +10,7 @@ p2 = [-1.0 ; 0.0 ; -1/sqrt(2)]
 p3 = [0.0 ; 1.0 ; 1/sqrt(2)]
 p4 = [0.0 ; -1.0 ; 1/sqrt(2)]
 
-its = 10000
+its = 100000
 guidePoints = [p1,p2,p3,p4]
 
 function doLoop(its,betweenRatio,dataset)
@@ -32,6 +32,8 @@ numOfGp = length(guidePoints)
 points = hcat(p1, p2, p3, p4, calcDataset(its,0.5))
 #println(points)
 group = append!(repeat(["Guide Points"],numOfGp),repeat(["points"],its))
+markersizes = append!(repeat([3],numOfGp),repeat([1],its))
+markercolors = append!(repeat([:blue],numOfGp),repeat([:green],its))
 #println(group)
 
 println(size(points))
@@ -41,7 +43,7 @@ println(size(points))
 #println(points[2,:])
 #println(points[3,:])
 anim = @animate for i in range(0, stop = 2π, length= 100)
-	p = Plots.plot(points[1,:],points[2,:],points[3,:], seriestype = :scatter, group = group, axis=nothing)
+	p = Plots.plot(points[1,:],points[2,:],points[3,:], seriestype = :scatter, group = group, axis=nothing, markersize = markersizes, markeralpha=0.6, markercolor = markercolors, markerstrokewidth=1)
 	#Plots.plot!(p, camera = (10 * (1 + cos(i)), 40))
 	Plots.plot!(p, camera = (10 * (1 + cos(i)), 10*(1+cos(i))))
 end

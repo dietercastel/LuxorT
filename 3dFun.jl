@@ -6,66 +6,61 @@ function between(p1,p2,offset)
 end
 its = 100000
 
+function multVec(v,tuple,indexes)
+	k = ones((length(v),1))
+	for (i,t) in enumerate(tuple)
+		k[indexes[i]] = tuple[i]
+	end
+	return k .* v
+end
 
-# 
-# 
 function negPermut(myVec,indexes)
 	neg = [1,-1]
 	idl = length(indexes)
 	resultLength = 2^length(indexes)
-	vl = length(myVec)
-	result = fill(0,(vl,resultLength)) 
-	#result = repeat([myVec],resultLength)
 	cartesianProduct = Iterators.product(repeat([neg],idl)...)
-	println(collect(cartesianProduct))
-	for (idx,tuple) in enumerate(cartesianProduct)
-		for i in 1:vl
-			tupidx = 1
-			if i in indexes
-				result[i,idx] = tuple[tupidx]*myVec[i]
-				tupidx += 1
-			else
-				result[i,idx] = myVec[i]
-			end
-		end
-	end
-	return result
+	flattendProd = vcat(cartesianProduct...)
+	println(size(cartesianProduct))
+	println(flattendProd)
+	#result = repeat([myVec],resultLength)
+	#vl = length(myVec)
+	#result = fill(0,(vl,resultLength)) 
+	#result = repeat([myVec],resultLength)
+	return map(x->multVec(myVec,x,indexes),flattendProd)
 end
 
-	#	for (tpel,vidx) in zip(tuple,indexes)
-	#		println(result)
-	#		println(idx,vidx)
-	#		println(tpel)
-			#println(vidx)
-			#println(result[idx])
-			#println(result[idx][vidx])
-			#println(tpel*result[idx][vidx])
-	#		result[idx][vidx] = tpel*result[idx][vidx]
-	#	end
 
 function getTethrahedron()
 	p1 = [1.0 ; 0.0 ; -1/sqrt(2)]
-	p2 = [-1.0 ; 0.0 ; -1/sqrt(2)]
+	#p2 = [-1.0 ; 0.0 ; -1/sqrt(2)]
 	p3 = [0.0 ; 1.0 ; 1/sqrt(2)]
-	p4 = [0.0 ; -1.0 ; 1/sqrt(2)]
-	return ("tetrahedron",[p1,p2,p3,p4])
+	#p4 = [0.0 ; -1.0 ; 1/sqrt(2)]
+	result = vcat(negPermut(p1,[1]),negPermut(p3,[2]))
+	#result = [p1,p2,p3,p4]
+	return ("tetrahedron", result)
 end
 
 function getOctahedron()
 	p1 = [ 1, 0 , 0]
-	p2 = [ -1, 0 , 0]
+	#p2 = [ -1, 0 , 0]
 	p3 = [ 0, 1 , 0]
-	p4 = [ 0, -1, 0 ]
+	#p4 = [ 0, -1, 0 ]
 	p5 = [ 0, 0 , 1]
-	p6 = [ 0, 0 , -1]
-	return ("octahedron",[p1,p2,p3,p4,p5,p6])
+	#p6 = [ 0, 0 , -1]
+	#result = [p1,p2,p3,p4,p5,p6]
+	result = vcat(negPermut(p1,[1]),negPermut(p3,[2]),negPermut(p5,[3]))
+	return ("octahedron",result)
 end
 
 function getDodecahedron()
 	g = MathConstants.golden
 	p1 = [ 1, 1 , 1]
-	p2 = [ -1, -1 , -1]
-	return ("dodecahedron",[p1,p2,p3,p4,p5,p6,p7,p8])
+	p2 = [0, g, 1/g]
+	permp2 = negPermut(p2,2:3)
+	permp3 = negPermut(circshift(p2,1),[1,3])
+	permp4 = negPermut(circshift(p2,2),1:2)
+	result = vcat(negPermut(p1,1:3),permp2,permp3,permp4)
+	return ("dodecahedron",result)
 end
 
 #fileName,guidePoints = getTethrahedron()
@@ -107,4 +102,4 @@ anim = @animate for i in range(0, stop = 2π, length= 100)
 	Plots.plot!(p, camera = (10 * (1 + cos(i)), 10*(1+cos(i))))
 end
 
-gif(anim, "octahedron.gif", fps=10)
+gif(anim, "$fileName.gif", fps=10)

@@ -6,6 +6,7 @@ function between(p1,p2,offset)
 end
 its = 100000
 
+# Multiplies the elements at indexes of vector v with the corresponding elements of the given tuple
 function multVec(v,tuple,indexes)
 	k = ones((length(v),1))
 	for (i,t) in enumerate(tuple)
@@ -14,18 +15,13 @@ function multVec(v,tuple,indexes)
 	return k .* v
 end
 
+# Generates all permutations of myVec of which the elements at indexes are negated
 function negPermut(myVec,indexes)
 	neg = [1,-1]
 	idl = length(indexes)
 	resultLength = 2^length(indexes)
 	cartesianProduct = Iterators.product(repeat([neg],idl)...)
 	flattendProd = vcat(cartesianProduct...)
-	println(size(cartesianProduct))
-	println(flattendProd)
-	#result = repeat([myVec],resultLength)
-	#vl = length(myVec)
-	#result = fill(0,(vl,resultLength)) 
-	#result = repeat([myVec],resultLength)
 	return map(x->multVec(myVec,x,indexes),flattendProd)
 end
 
@@ -60,7 +56,7 @@ function getDodecahedron()
 	permp3 = negPermut(circshift(p2,1),[1,3])
 	permp4 = negPermut(circshift(p2,2),1:2)
 	result = vcat(negPermut(p1,1:3),permp2,permp3,permp4)
-	return ("dodecahedron",result)
+	return ("dodecahedron2",result)
 end
 
 #fileName,guidePoints = getTethrahedron()
@@ -99,7 +95,7 @@ println(size(points))
 anim = @animate for i in range(0, stop = 2π, length= 100)
 	p = Plots.plot(points[1,:],points[2,:],points[3,:], seriestype = :scatter, group = group, axis=nothing, markersize = markersizes, markeralpha=0.6, markercolor = markercolors, markerstrokewidth=1)
 	#Plots.plot!(p, camera = (10 * (1 + cos(i)), 40))
-	Plots.plot!(p, camera = (10 * (1 + cos(i)), 10*(1+cos(i))))
+	Plots.plot!(p, camera = (20 * (1 + cos(i)), 10*(1+cos(i))))
 end
 
 gif(anim, "$fileName.gif", fps=10)

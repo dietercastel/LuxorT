@@ -4,7 +4,7 @@ theme(:dark)
 function between(p1,p2,offset)
 	return p1+(offset*(p2-p1))
 end
-its = 400000
+its = 500000
 
 # Multiplies the elements at indexes of vector v with the corresponding elements of the given tuple
 function multVec(v,tuple,indexes)
@@ -92,10 +92,10 @@ println(size(points))
 #println(points[1,:])
 #println(points[2,:])
 #println(points[3,:])
-anim = @animate for i in range(0, stop = 2π, length= 200)
-	p = Plots.plot(points[1,:],points[2,:],points[3,:], seriestype = :scatter, group = group, axis=nothing, markersize = markersizes, markeralpha=0.1, markercolor = markercolors, markerstrokewidth=1)
+anim = @animate for i in range(0, stop = 2π, length= 250)
+	p = Plots.plot(points[1,:],points[2,:],points[3,:], seriestype = :scatter, group = group, axis=nothing, markersize = markersizes, markeralpha=0.05, markercolor = markercolors, markerstrokewidth=1)
 	#Plots.plot!(p, camera = (10 * (1 + cos(i)), 40))
-	Plots.plot!(p, camera = (40 * (1 + cos(i)), 30*(1+cos(i))))
+	Plots.plot!(p, camera = (50 * (1 + cos(i)), 40*(1+cos(i))))
 end
 
-gif(anim, "$fileName.gif", fps=10)
+webm(anim, "$fileName.webm", fps=10)

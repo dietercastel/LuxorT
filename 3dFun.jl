@@ -4,7 +4,8 @@ theme(:dark)
 function between(p1,p2,offset)
 	return p1+(offset*(p2-p1))
 end
-its = 300000
+g = MathConstants.golden
+its = 400000
 
 # Multiplies the elements at indexes of vector v with the corresponding elements of the given tuple
 function multVec(v,tuple,indexes)
@@ -56,7 +57,6 @@ function getOctahedron()
 end
 
 function getDodecahedron()
-	g = MathConstants.golden
 	p1 = [ 1, 1 , 1]
 	p2 = [0, g, 1/g]
 	permp2 = negPermut(p2,2:3)
@@ -66,10 +66,20 @@ function getDodecahedron()
 	return ("dodecahedron3",result)
 end
 
+function getIcosahedron()
+	p1 = [0; 1; g]
+	permp1 = negPermut(p1,2:3)
+	permp2 = negPermut(circshift(p1,1),[1,3])
+	permp3 = negPermut(circshift(p1,2),1:2)
+	result = vcat(permp1,permp2,permp3)
+	return ("icosahedron",result)
+end
+
 #fileName,guidePoints = getTethrahedron()
+#fileName,guidePoints = getCube() 
 #fileName,guidePoints = getOctahedron() 
 #fileName,guidePoints = getDodecahedron() 
-fileName,guidePoints = getCube() 
+fileName,guidePoints = getIcosahedron() 
 
 function doLoop(its,betweenRatio,dataset)
 	for i in 1:its-1
@@ -90,7 +100,7 @@ numOfGp = length(guidePoints)
 points = hcat(guidePoints..., calcDataset(its,0.5))
 #println(points)
 group = append!(repeat(["Guide Points"],numOfGp),repeat(["points"],its))
-markersizes = append!(repeat([5.0],numOfGp),repeat([1.0],its))
+markersizes = append!(repeat([5.0],numOfGp),repeat([0.7],its))
 markercolors = append!(repeat([:blue],numOfGp),repeat([:green],its))
 #println(group)
 
@@ -101,7 +111,7 @@ println(size(points))
 #println(points[2,:])
 #println(points[3,:])
 anim = @animate for i in range(0, stop = 2π, length= 250)
-	p = Plots.plot(points[1,:],points[2,:],points[3,:], seriestype = :scatter, group = group, axis=nothing, markersize = markersizes, markeralpha=0.3, markercolor = markercolors, markerstrokewidth=1)
+	p = Plots.plot(points[1,:],points[2,:],points[3,:], seriestype = :scatter, group = group, axis=nothing, markersize = markersizes, markeralpha=0.2, markercolor = markercolors, markerstrokewidth=1)
 	#Plots.plot!(p, camera = (10 * (1 + cos(i)), 40))
 	Plots.plot!(p, camera = (40 * (1 + cos(i)), 30*(1+cos(i))))
 end

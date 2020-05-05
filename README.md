@@ -16,3 +16,7 @@ Implementation of the [Chaos Game](https://en.wikipedia.org/wiki/Chaos_game) usi
 
 ### Tetrahedron
 ![3d sierpinski tethrahedron](3dfun.gif)
+
+### Approximate Paraboloid
+
+![3d chaos game approximate Paraboloid](paraboloid.gif)

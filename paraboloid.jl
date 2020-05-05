@@ -6,23 +6,24 @@ function between(p1,p2,offset)
 end
 its = 200000
 
-function getParaboloid(mx)
+function getParaboloid(mx,stepSize)
 	parab = x->-x^2 + mx
-	pts = -10:5:10
+	pts = (-mx):stepSize:mx
 	len = length(pts) 
 	x = vcat(pts,repeat([0.0],len))
 	println(x)
 	y = vcat(repeat([0.0],len),pts)
 	z = vcat(map(parab,x[1:len]),map(parab,y[len+1:end]))
 	xyz = [ [a[1];a[2];a[3]] for a in zip(x,y,z)]
-	return ("paraboloid",xyz)
+	return ("paraboloid-$mx-$stepSize",xyz)
 end
 
 #fileName,guidePoints = getTethrahedron()
 #fileName,guidePoints = getCube() 
 #fileName,guidePoints = getOctahedron() 
 #fileName,guidePoints = getDodecahedron() 
-fileName,guidePoints = getParaboloid(10) 
+#fileName,guidePoints = getParaboloid(10,5) 
+fileName,guidePoints = getParaboloid(10,2) 
 
 function doLoop(its,betweenRatio,dataset)
 	for i in 1:its-1

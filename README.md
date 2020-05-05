@@ -20,3 +20,4 @@ Implementation of the [Chaos Game](https://en.wikipedia.org/wiki/Chaos_game) usi
 ### Approximate Paraboloid
 
 ![3d chaos game approximate Paraboloid](paraboloid.gif)
+![3d chaos game approximate Paraboloid 2](paraboloid-10-2.gif)

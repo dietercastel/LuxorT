@@ -16,7 +16,7 @@ function multVec(v,tuple,indexes)
 	return k .* v
 end
 
-# Generates all permutations of myVec of which the elements at indexes are negated
+# Generates all permutations of myVec of which the elements at indexes negated and not negated
 function negPermut(myVec,indexes)
 	neg = [1,-1]
 	idl = length(indexes)

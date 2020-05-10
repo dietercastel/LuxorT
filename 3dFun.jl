@@ -75,6 +75,23 @@ function getIcosahedron()
 	return ("icosahedron",result)
 end
 
+
+function evenPermutations(v)
+	return collect(Iterators.filter(x->iseven(parity(x)),p))
+end
+
+
+function getTruncatedDodecahedron()
+	p1 = [0 ; 1/g; 2+g]
+	permp1 = negPermut(p1,2:3)
+	p2 = [1/g ; g; 2g]
+	permp2 = negPermut(p2,1:3)
+	p3 = [g ; 2; g+1]
+	permp3 = negPermut(p3,1:3)
+	result = vcat(permp1,permp2,permp3)
+end
+
+
 #fileName,guidePoints = getTethrahedron()
 #fileName,guidePoints = getCube() 
 #fileName,guidePoints = getOctahedron() 

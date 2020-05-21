@@ -1,3 +1,5 @@
+using Images, FileIO, Colors, Plots
+using Luxor
 img = load("Crop1.png")
 imedge(img)
 img_gray = Gray.(img)
@@ -16,3 +18,13 @@ y,x = size(mag)
 yarr =vcat([repeat([i],928) for i in 1:1774]...)
 plot(repeat(1:928,1774),yarr,reshape(mag,(928*1774,)),st=:surface)
 save("sobel1.png",mag)
+
+function luxorIdea()
+	origin()
+	for y in 1:1774 
+		for x in 1:928
+			rule(Point(x, y), or[y,x])
+			# vector field with Luxor using arrow
+		end
+	end
+end

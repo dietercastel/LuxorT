@@ -10,6 +10,9 @@ Containing:
 - an implementation of a [circular involute](https://en.wikipedia.org/wiki/Involute#Involutes_of_a_circle).
 ![](circularInvolute.png)
 
+Inspired by the [Tangential Art Video](https://www.youtube.com/watch?v=9TvpOzPKcy4).
+![](https://github.com/dietercastel/LuxorT/raw/master/tangentialArt/exp5%266%26tan.png)
+
 ## 3D 
 
 Implementation of the [Chaos Game](https://en.wikipedia.org/wiki/Chaos_game) using [Plots.jl](https://github.com/JuliaPlots/Plots.jl) to be found in [3dFun.jl](3dFun.jl)

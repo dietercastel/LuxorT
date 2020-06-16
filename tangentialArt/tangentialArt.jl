@@ -3,6 +3,7 @@
 using Test
 using Luxor
 using LinearAlgebra
+using QuadGK
 
 function shiftLeft(s)
 	return s[2:end]
@@ -90,7 +91,8 @@ function makeSeq(f,len)
 end
 
 function p2(p::Vector, size)
-	return	p .* 2/size .+ 0.0000001
+	return	p .* 2/size 
+	#= return	p .* 2/size .+ 0.0000001 =#
 end
 
 function colorize!(z)
@@ -115,6 +117,7 @@ function main(seq, size, upper_bound, filename)
 		#= print(z1) =#
 		colorize!(z1)
 		actualP  = Point((p .+ size/2)...)
+		#= println("$p gives $mp2 at $actualP") =#
 		circle(actualP, 1, :fill)
 	end
 	finish()
@@ -122,6 +125,64 @@ function main(seq, size, upper_bound, filename)
 end
 
 
+#https://en.wikipedia.org/wiki/Fresnel_integral
+function S(x)
+		 integral, err = quadgk(t->sin(t^2),0,x,rtol=1e-8)
+		 return integral
+end
+
+function C(x)
+		 integral, err = quadgk(t->cos(t^2),0,x,rtol=1e-8)
+		 return integral
+end
+
+function fourier(f,x)
+		integral, err = quadgk(ζ->f(ζ)*ℯ^(2π*im*x*ζ),-200,200,rtol=1e-3)
+		return integral
+end
+
+function normal(x)
+	return 1/(2π)* ℯ^(-1/2*x^2)
+end
+
+function weierstrass(N::Int,a::Real,b::Int)
+	@assert b > 0
+	@assert isodd(b)
+	@assert 0 < a && a < 1
+	@assert a*b > 1+3\2*π
+	@assert N > 0 
+	return function W(x)
+		ns = 0:N
+		as = a .^ ns 
+		bs = b .^ ns 
+		return sum(as .* cos.(bs .* (π * x)))
+	end
+end
+
+function s(x)
+	f = floor(x)
+	c = ceil(x)
+	return abs(x - f) < abs(x-c) ? f : c
+end
+
+function blancmange(N)
+	w = 1/2	
+	@assert N > 0
+	return function b(x)
+		ns = 0:N
+		twoPows = w .^ ns 
+		return sum( s.(twoPows .* x) .* twoPows )
+	end
+end
+
+main(x->S(x)*blancmange(10000)(x),800,2000, "blanc-S.png")
+#main(blancmange(10000),400,500, "blancmange.png")
+#main(x->weierstrass(10000,0.7,7)(x),400,500, "weierstrass.png")
+#= main(x->fourier(t->tan(t),x), 400, 500, "fourier.png") =#
+#main(x->normal(x),400, 500, "normal.png")
+#main(x->S(x)^C(x), 400, 500, "Fresnel-cos.png")
+#main(x->S(x), 400, 500, "Fresnel-sin.png")
+#main(x->x^x, 400, 500, "exp8.png")
 #main(x->exp(x),  400, 500, "exp7.png")
 #main(x->tan(x)*(-30*x^2 +12)*tan(sin(1/(x+0.001)))*cosh(x/2),  400, 500, "exp5&6&tan.png")
 #main(x->-30*x^2 +12,  400, 500, "exp5&6&tan.png")
@@ -130,6 +191,7 @@ end
 #main(x->tan(sin(x)), 400, 500, "tan o sin x.png")
 #main(sin, 400, 500,"sin.png")
 #main(tan, 400, 500,"tan.png")
+#main(tan, 400, 500,"tanp2NOp0.1.png")
 
 
 

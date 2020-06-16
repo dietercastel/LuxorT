@@ -175,7 +175,9 @@ function blancmange(N)
 	end
 end
 
-main(x->S(x)*blancmange(10000)(x),800,2000, "blanc-S.png")
+@time main(x->S(x)*blancmange(10000)(x),800,2000, "blanc-S-large.png") # 15 minutes
+#502605
+#895.466135 seconds (8.76 G allocations: 209.579 GiB, 2.24% gc time)
 #main(blancmange(10000),400,500, "blancmange.png")
 #main(x->weierstrass(10000,0.7,7)(x),400,500, "weierstrass.png")
 #= main(x->fourier(t->tan(t),x), 400, 500, "fourier.png") =#

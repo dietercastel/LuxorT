@@ -12,6 +12,7 @@ Containing:
 
 Inspired by the [Tangential Art Video](https://www.youtube.com/watch?v=9TvpOzPKcy4).
 ![](https://github.com/dietercastel/LuxorT/raw/master/tangentialArt/exp5%266%26tan.png)
+![](https://github.com/dietercastel/LuxorT/raw/master/tangentialArt/blanc-S-large.png)
 
 ## 3D 
 

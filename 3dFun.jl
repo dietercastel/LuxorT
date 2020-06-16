@@ -17,6 +17,7 @@ function multVec(v,tuple,indexes)
 end
 
 # Generates all permutations of myVec of which the elements at indexes negated and not negated
+# e.g. negPermut([1 2], [1]) gives [1 2] [-1 2]
 function negPermut(myVec,indexes)
 	neg = [1,-1]
 	idl = length(indexes)
@@ -66,6 +67,17 @@ function getDodecahedron()
 	return ("dodecahedron3",result)
 end
 
+function getRhombicDodecahedron()
+	p1 = [1, 1, 1]
+	p2 = [2, 0, 0]
+	permp1 = negPermut(p1,1:3)
+	permp2 = negPermut(p2,[1])
+	permp3 = negPermut(circshift(p2,1),[2]) 
+	permp4 = negPermut(circshift(p2,2),[3]) 
+	result = vcat(permp1,permp2,permp3,permp4)
+	return ("rhombicDodecahedron",result)
+end
+
 function getIcosahedron()
 	p1 = [0; 1; g]
 	permp1 = negPermut(p1,2:3)
@@ -96,7 +108,8 @@ end
 #fileName,guidePoints = getCube() 
 #fileName,guidePoints = getOctahedron() 
 #fileName,guidePoints = getDodecahedron() 
-fileName,guidePoints = getIcosahedron() 
+#fileName,guidePoints = getIcosahedron() 
+fileName,guidePoints = getRhombicDodecahedron() 
 
 function doLoop(its,betweenRatio,dataset)
 	for i in 1:its-1
@@ -133,4 +146,6 @@ anim = @animate for i in range(0, stop = 2π, length= 250)
 	Plots.plot!(p, camera = (40 * (1 + cos(i)), 30*(1+cos(i))))
 end
 
-webm(anim, "$fileName.webm", fps=10)
+#webm(anim, "$fileName.webm", fps=10)
+gif(anim, "$fileName.webm", fps=10)
+

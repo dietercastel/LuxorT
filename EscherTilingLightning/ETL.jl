@@ -28,10 +28,6 @@ function generateTiles(gridSize,edgeRemProb)
 	return g2, xs, ys
 end
 
-#= function sendFrontier() =#
-#=  =#
-#= end =#
-
 function neighborsToRelCoord(v,neighbors,gridSize)
 	w,h = gridSize
 	relNeighbors = neighbors .- v
@@ -40,6 +36,7 @@ function neighborsToRelCoord(v,neighbors,gridSize)
 end
 
 relToBoxIdx = Dict([(1,0) => [3,4], (-1,0) => [1,2], (0,-1) => [2,3], (0,1) => [1,4]])
+allRelNbs = [(1,0),(-1,0),(0,1),(0,-1)]
 
 function drawRelNb(relNB::Tuple, box::Array)
 	#= println(relNB) =#
@@ -48,12 +45,10 @@ function drawRelNb(relNB::Tuple, box::Array)
 	line(box[idxs[1]],box[idxs[2]],:stroke)	
 end
 
-function draw(size;edgeRemProb=0.8)
+function draw(size,tileSize;edgeRemProb=0.8)
 	gridSize = size 
 	g2, xs, ys = generateTiles(gridSize,edgeRemProb)	
-	tileW = 20 
-	tileH = 20 
-	Drawing()
+	tileW,tileH = tileSize
 	#= origin() =#
 	for v in vertices(g2)
 		nbs = neighbors(g2,v)
@@ -62,11 +57,48 @@ function draw(size;edgeRemProb=0.8)
 		x = xs[v]*tileW
 		y = ys[v]*tileH
 		rectBox = box(Point(x,y),tileW,tileH,vertices=true)
-		map(nb->drawRelNb(nb,rectBox),relNb)
+		# Draw a border where there is NO neighbor connection
+		borders = filter(x-> x ∉ relNb, allRelNbs)
+		map(nb->drawRelNb(nb,rectBox),borders)
 	end
+	drawLightning(g2,xs,ys,size,(tileW,tileH))
+end
+
+#= function shorterLength(x,y) =#
+#= 	return length(x) < length(y) =#
+#= end =#
+
+function drawLightning(g,xs,ys,size, tileSize)
+	tileW,tileH = tileSize 
+	w,h = size
+	randStart = rand(1:w)
+	randStop = nv(g) - rand(1:w)
+	#= lowerRow = nv(g) .- collect(1:2) =#
+	lowerRow = nv(g) .- collect(1:w)
+	DS = dijkstra_shortest_paths(g,[randStart])
+	for p in enumerate_paths(DS,lowerRow)
+	#= #= for p in enumerate_paths(DS,lowerRow) =# =#
+		println(p)
+		println(length(p))
+	end
+	sortedPaths = sort(collect(enumerate_paths(DS,lowerRow)), by=length)	
+	println(sortedPaths)
+	filter!(x->length(x) != 0, sortedPaths)
+	println("Lightning= ", sortedPaths[1])
+	lightningPath = sortedPaths[1]
+	sethue("white")
+	for v in lightningPath
+		x = xs[v]*tileW
+		y = ys[v]*tileH
+		rectBox = box(Point(x,y),tileW,tileH,:fill)
+	end
+end
+
+function main()
+	Drawing()
+	draw((60,60),(5,5),edgeRemProb=0.4)
 	finish()
 	preview()
 end
 
-
-draw((40,40),edgeRemProb=0.5)
+main()

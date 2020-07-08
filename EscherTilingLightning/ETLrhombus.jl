@@ -7,6 +7,48 @@ using LightGraphs
 using Plots
 using GraphRecipes
 
+
+"""
+	rhombus(centerpoint, width, height, action, vertices=false)
+
+Create a rhombus with the given centerpoint with `width` and `height` and then
+do an action.
+
+Use `vertices=true` to return an array of the four corner points: left, top, right, bottom.
+"""
+function rhombus(centerpoint::Point, width, height, action=:nothing; vertices=false)
+	 ptlist = [centerpoint - (width/2,0),
+						 centerpoint - (0,height/2),
+						 centerpoint + (width/2,0),
+						 centerpoint + (0,height/2)]
+	 if vertices == false && action != :none
+		 return poly(ptlist, action, close=true)
+	 end
+	 return ptlist
+end
+
+#TODO
+function mandraw(grid)
+	Drawing()
+	w=35
+	h=20
+	offset=w/2+h/2
+	rhombus(Point(0,0),w,h,:stroke)
+	for x in 1:grid[1]
+		for y in 1:grid[2]
+			if isodd(x) & isodd(y)
+				rhombus(Point(offset*x,offset*y),w,h,:stroke)
+				rhombus(Point(offset*x+offset,offset*y-offset),w,h,:stroke)
+				rhombus(Point(offset*x,offset*y-offset),h,w,:stroke)
+				rhombus(Point(offset*x-offset,offset*y),h,w,:stroke)
+			end
+		end
+	end
+	finish()
+	preview()
+end
+
+
 function remEdgeProb!(g,e,edgeRemProb)
 	if rand()<=edgeRemProb
 		rem_edge!(g,e)

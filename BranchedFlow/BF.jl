@@ -1,6 +1,7 @@
 using Plots
 using Luxor
 using Base.Iterators
+using Random: shuffle
 include("PerlinsNoise.jl")
 using .PerlinsNoise
 
@@ -37,7 +38,17 @@ function draw(lineNum,bbSize,its)
 	map((sp,cp)->line(sp,cp,:stroke),startPoints,currentPoints)
 	for t in 1:its
 		r = rand()
-		currentPoints = map(p->drawSlope(p,perlinsnoise(p[1]/lineNum,p[2]/lineNum,3.14),r*bbSize),currentPoints)
+		erat = rand()
+		if erat > 0.05 && erat < 0.95
+			currentPoints = map(p->drawSlope(p,perlinsnoise(p[1]/lineNum,p[2]/lineNum,3.14),r*bbSize),currentPoints)
+		else
+			rndidxs = shuffle(1:lineNum)	
+			regulars = view(rndidxs,1:floor(Int,0.95*lineNum))
+			erratics = view(rndidxs,(floor(Int,0.95*lineNum)+1):lineNum)
+			newregulars = map(p->drawSlope(p,perlinsnoise(p[1]/lineNum,p[2]/lineNum,3.14),r*bbSize),currentPoints[regulars])
+			newerratics = map(p->drawSlope(p,perlinsnoise(p[1],p[2],3.14),r*bbSize),currentPoints[erratics])
+			currentPoints = vcat(newregulars,newerratics)
+		end
 	end
 end
 
@@ -45,7 +56,7 @@ function main()
 	Drawing(1600,800)
 	background("black")
 	setline(0.5)
-	draw(128,16,256)
+	draw(128,32,256)
 	finish()
 	preview()
 end

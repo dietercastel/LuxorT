@@ -31,7 +31,7 @@ end
 
 function draw(lineNum,bbSize,its)
 	setcolor(0,0.8,0.2,0.8)
-	ys = range(1,400,length=lineNum)
+	ys = range(1,800,length=lineNum)
 	startPoints = map(y->Point(0,y),ys)
 	currentPoints = map(y->Point(bbSize,y),ys)
 	map((sp,cp)->line(sp,cp,:stroke),startPoints,currentPoints)
@@ -43,6 +43,7 @@ end
 
 function main()
 	Drawing(1600,800)
+	background("black")
 	setline(0.5)
 	draw(128,16,256)
 	finish()

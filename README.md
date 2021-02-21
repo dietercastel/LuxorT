@@ -14,6 +14,9 @@ Inspired by the [Tangential Art Video](https://www.youtube.com/watch?v=9TvpOzPKc
 ![](https://github.com/dietercastel/LuxorT/raw/master/tangentialArt/exp5%266%26tan.png)
 ![](https://github.com/dietercastel/LuxorT/raw/master/tangentialArt/blanc-S-large.png)
 
+Inspired by the [Branched FLow Paper](https://www.youtube.com/watch?v=UNCNp1tBqKY)
+![](https://github.com/dietercastel/LuxorT/raw/master/BranchedFlow/bf3.png)
+
 ## 3D 
 
 Implementation of the [Chaos Game](https://en.wikipedia.org/wiki/Chaos_game) using [Plots.jl](https://github.com/JuliaPlots/Plots.jl) to be found in [3dFun.jl](3dFun.jl)

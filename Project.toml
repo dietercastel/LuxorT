@@ -1,3 +1,10 @@
+name = "LuxorT"
+authors = ["Dieter Castel"]
+
 [deps]
+Colors = "5ae59095-9a9b-59fe-a467-6f913c188581"
+Combinatorics = "861a8166-3701-5b0c-9a16-15d98fcdc6aa"
+Debugger = "31a5f54b-26ea-5ae9-a837-f05ce5417438"
+Lindenmayer = "d9db2020-d13e-4bf8-b13e-b12a3214b5ef"
 Luxor = "ae8d54c2-7ccd-5906-9d76-62fc9837b5bc"
 Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"

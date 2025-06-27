@@ -1,5 +1,7 @@
 using Luxor
 using Random
+using Colors
+
 Drawing()
 origin()
 D1 = [ Point(-200,200), Point(-200,-200), Point(100,0), Point(20,-100),Point(20,100)]
@@ -17,10 +19,17 @@ function drawGuidePoints(guides)
 	end
 end
 
+function div255(x)
+	x/255
+end
+
 function run(guides,its,startPt)
-	drawGuidePoints(guides)
+	#drawGuidePoints(guides)
 	rng = MersenneTwister(0)
-	sethue("black")
+	#sethue("black")
+	jlgreen = [56,152,38]
+	jlgreenRGB = Colors.RGB(div255.(jlgreen)...)
+	sethue(jlgreen...)
 	current = start
 
 	altern = [0.87873, Base.MathConstants.golden,Base.MathConstants.pi]

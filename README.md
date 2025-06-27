@@ -17,6 +17,14 @@ Inspired by the [Tangential Art Video](https://www.youtube.com/watch?v=9TvpOzPKc
 Inspired by the [Branched FLow Paper](https://www.youtube.com/watch?v=UNCNp1tBqKY)
 ![](https://github.com/dietercastel/LuxorT/raw/master/BranchedFlow/bf3.png)
 
+
+Inspired by the concept of a [Phased Array](https://en.wikipedia.org/wiki/Phased_array). See [PhasedArray/PhasedArrayBlends.jl](PhasedArray/PhasedArrayBlends.jl
+).
+
+![](https://github.com/dietercastel/LuxorT/raw/master/PhasedArray/phasedArr.gif)
+
+![](https://github.com/dietercastel/LuxorT/raw/master/PhasedArray/phasedArr.N2-int300.mp4)
+
 ## 3D 
 
 Implementation of the [Chaos Game](https://en.wikipedia.org/wiki/Chaos_game) using [Plots.jl](https://github.com/JuliaPlots/Plots.jl) to be found in [3dFun.jl](3dFun.jl)
@@ -28,3 +36,4 @@ Implementation of the [Chaos Game](https://en.wikipedia.org/wiki/Chaos_game) usi
 
 ![3d chaos game approximate Paraboloid](paraboloid.gif)
 ![3d chaos game approximate Paraboloid 2](paraboloid-10-2.gif)
+

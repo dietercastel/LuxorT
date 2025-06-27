@@ -30,10 +30,21 @@ function inCylinderBounds(x,y,r,l)
 end
 
 
-function generateRandXYZ(n)
+#much slower
+function generateRandXYZ1(n)
 	# rand generates a random vector between (0,0,0) and (1,1,1)
 	rs = rand(SVector{3,Float64},n)
-	return reshape(vcat(rs...),3,n)
+	# slower:
+	#return reshape(vcat(rs...),3,n)
+	return reshape(reduce(vcat,rs),3,n)
+end
+
+function generateRandXYZ(n)
+	# rand generates a random vector between (0,0,0) and (1,1,1)
+	xs = rand(SVector{n,Float64},1)
+	ys = rand(SVector{n,Float64},1)
+	zs = rand(SVector{n,Float64},1)
+	return xs,ys,zs
 end
 
 function inHalfVolume(x,y,z)
@@ -68,19 +79,32 @@ end
 
 x,y,z = getXYZ(cylinderLength,xl,yl)
 
-rs = generateRandXYZ(totalPoints)
 #Plots.plot(x,y,z,seriestype=:scatter)
 #Plots.plot(x,y,z,seriestype=:surface,aspect_ratio=:equal)
 
-bools = [inHalfVolume(rs[1,i],rs[2,i], rs[3,i]) for i in 1:totalPoints]
-insidecube = sum(bools)
-ratio = insidecube/totalPoints
-println("$ratio ($insidecube/$totalPoints"))
+rx,ry,rz = generateRandXYZ(totalPoints)
+
+function appendToFile(totalPoints,insidecube)
+	df = DataFrame([[totalPoints], [insidecube]], [:n, :inside])
+	CSV.write(csvFile,df,append=true)
+end
+
+function estimate()
+	#bools = [inHalfVolume(rs[1,i],rs[2,i], rs[3,i]) for i in 1:totalPoints]
+	bools = [inHalfVolume(rx,ry,rz) for i in 1:totalPoints]
+	insidecube = sum(bools)
+	ratio = insidecube/totalPoints
+	println("$ratio ($insidecube/$totalPoints)")
+	volEstimate = estimatedVolume(radius, cylinderLength, insidecube)
+	println("Volume estimate (radius=$radius,length=$cylinderLength) 1/2 V_x = $volEstimate")
+	appendToFile(totalPoints,insidecube)
+end
 
 function plot3d()
 	anim = @animate for i in range(0, stop = 2π, length= 250)
 		p = Plots.plot(x,y,z, seriestype = :surface, axis=nothing,aspect_ratio=:equal)
-		Plots.plot!(rs[1,:],rs[2,:],rs[3,:], seriestype=:scatter)
+		#Plots.plot!(rs[1,:],rs[2,:],rs[3,:], seriestype=:scatter)
+		Plots.plot!(rx,ry,rz, seriestype=:scatter, seriescolor=:blue)
 		#Plots.plot!(p, camera = (10 * (1 + cos(i)), 40))
 		Plots.plot!(p, camera = (40 * (1 + cos(i)), 30*(1+cos(i))))
 	end
@@ -108,13 +132,5 @@ function estimatedVolume(r,l,insidecube)
 	return volumeCrossedCuboid(r,l) * 4*(insidecube/totalPoints)
 end
 
-volEstimate = estimatedVolume(radius, cylinderLength, insidecube)
-println("Volume estimate 1/2 V_x = $volEstimate")
-
-
-function appendToFile()
-	df = DataFrame([[totalPoints], [insidecube]], [:n, :inside])
-	CSV.write(csvFile,df,append=true)
-end
-
-appendToFile()
+estimate()
+#plot3d()

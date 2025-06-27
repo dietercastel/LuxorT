@@ -23,7 +23,7 @@ Inspired by the concept of a [Phased Array](https://en.wikipedia.org/wiki/Phased
 
 ![](https://github.com/dietercastel/LuxorT/raw/master/PhasedArray/phasedArr.gif)
 
-![](https://github.com/dietercastel/LuxorT/raw/master/PhasedArray/phasedArr.N2-int300.webm)
+![](https://github.com/dietercastel/LuxorT/raw/master/PhasedArray/phasedArr.N2-int300.webm.mp4)
 
 ![](https://github.com/dietercastel/LuxorT/raw/master/PhasedArray/phasedArr.N2-int300.mp4)
 
